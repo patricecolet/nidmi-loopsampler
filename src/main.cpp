@@ -53,15 +53,15 @@ static void audioTask(void*) {
 /* -------------------------------------------------------------------------
  * Callbacks RTP-MIDI
  * ------------------------------------------------------------------------- */
-static void onNoteOn(byte ch, byte note, byte vel) {
+static void onNoteOn(uint8_t ch, uint8_t note, uint8_t vel) {
     g_player.noteOn(ch, note, vel);
 }
 
-static void onNoteOff(byte ch, byte note, byte vel) {
+static void onNoteOff(uint8_t ch, uint8_t note, uint8_t vel) {
     g_player.noteOff(ch, note);
 }
 
-static void onControlChange(byte ch, byte cc, byte val) {
+static void onControlChange(uint8_t ch, uint8_t cc, uint8_t val) {
     if (val < 64) return;  /* only on (≥64) */
     switch (cc) {
         case kCC_Record: {
@@ -108,9 +108,7 @@ void setup() {
 
     /* RTP-MIDI */
     if (g_rtp.begin(kRtpName)) {
-        g_rtp.setHandleNoteOn(onNoteOn);
-        g_rtp.setHandleNoteOff(onNoteOff);
-        g_rtp.setHandleControlChange(onControlChange);
+        g_rtp.setMidiInputHooks(onNoteOn, onNoteOff, onControlChange);
         Serial.printf("[setup] RTP-MIDI prêt (port %u)\n", g_rtp.port());
     }
 
