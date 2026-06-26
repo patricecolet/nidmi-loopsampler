@@ -37,7 +37,7 @@ static WavPlayer         g_player(g_codec);
 static Looper            g_looper(g_codec);
 static SampleBank        g_bank;
 static AsyncWebServer    g_server(80);
-static nidmi::RtpMidiService g_rtp;
+static nidmi_core::RtpMidiService g_rtp;
 static AudioAPI          g_audioApi(g_server, g_player, g_looper, g_bank);
 
 /* -------------------------------------------------------------------------
@@ -83,7 +83,7 @@ static void onControlChange(uint8_t ch, uint8_t cc, uint8_t val) {
 void setup() {
     Serial.begin(115200);
     delay(200);
-    Serial.printf("[nidmi-loopsampler] nidmi-core %s\n", nidmi::version());
+    Serial.printf("[nidmi-loopsampler] nidmi-core %s\n", nidmi_core::version());
 
     /* SD */
     if (!g_bank.begin()) {
@@ -101,7 +101,7 @@ void setup() {
     g_looper.begin();
 
     /* WiFi AP */
-    if (!nidmi::netBeginSoftAp(kApSsid, kApPass, kMdnsHost)) {
+    if (!nidmi_core::netBeginSoftAp(kApSsid, kApPass, kMdnsHost)) {
         Serial.println("[setup] ERREUR: WiFi AP");
     }
     Serial.printf("[setup] AP IP: %s\n", WiFi.softAPIP().toString().c_str());
